@@ -7,24 +7,39 @@ export default {
   theme: {
     extend: {
       colors: {
+        /* Dark mode surface colors */
         dark: {
-          900: '#0f0f23',
-          800: '#1a1a2e',
-          700: '#16213e',
+          950: '#0b031b',
+          900: '#0f0520',
+          800: '#1a0a2e',
+          700: '#261042',
         },
+        /* Light mode surface colors */
+        light: {
+          50:  '#fdf6ff',
+          100: '#f5e8ff',
+          200: '#e8d0ff',
+        },
+        /* Primary accent – vivid pink from old porto */
+        pink: {
+          400: '#e066f5',
+          500: '#d448f7',
+          600: '#c030e0',
+        },
+        /* Secondary accent – rich purple from old porto */
         purple: {
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
+          400: '#a855f7',
+          500: '#9027f1',
+          600: '#7c10d8',
+          700: '#6309b5',
         },
-        blue: {
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-        }
-      }
+      },
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+        inter:  ['Inter',  'sans-serif'],
+      },
     },
   },
   plugins: [],
   darkMode: 'class',
-}
+}

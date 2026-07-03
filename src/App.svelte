@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  import { onMount } from 'svelte';
   import Header from './components/Header.svelte';
   import Hero from './components/Hero.svelte';
   import About from './components/About.svelte';
@@ -6,14 +7,41 @@
   import Projects from './components/Projects.svelte';
   import Contact from './components/Contact.svelte';
   import Footer from './components/Footer.svelte';
+
+  // ── Theme state ────────────────────────────────────────────────
+  // Default to dark; read from localStorage if available.
+  let isDark = true;
+
+  onMount(() => {
+    const saved = localStorage.getItem('theme');
+    isDark = saved ? saved === 'dark' : true;
+    applyTheme(isDark);
+  });
+
+  function applyTheme(dark: boolean) {
+    const html = document.documentElement;
+    if (dark) {
+      html.classList.add('dark');
+      html.classList.remove('light');
+    } else {
+      html.classList.add('light');
+      html.classList.remove('dark');
+    }
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+
+  function toggleTheme() {
+    isDark = !isDark;
+    applyTheme(isDark);
+  }
 </script>
 
-<main class="bg-dark-900 text-white">
-  <Header />
+<div class="bg-main min-h-screen">
+  <Header {isDark} {toggleTheme} />
   <Hero />
   <About />
   <Skills />
   <Projects />
   <Contact />
   <Footer />
-</main>
+</div>

@@ -93,5 +93,4 @@ export const animatePageLoad = () => {
     });
 };
 
-// Pastikan plugin tetap digunakan untuk mencegah tree-shaking
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+// Plugins already registered in gsapSetup.ts on import
