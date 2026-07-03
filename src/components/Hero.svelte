@@ -117,17 +117,24 @@
     </div>
 
     <!-- Image side -->
-    <div bind:this={heroImage} class="flex justify-center relative">
-      <div class="relative">
-        <div class="w-64 h-64 md:w-80 md:h-80 rounded-2xl p-[3px]" style="background: var(--theme-grad);">
-          <div class="w-full h-full rounded-2xl flex items-center justify-center overflow-hidden" style="background: var(--bg-base);">
-            <div class="border-2 border-dashed rounded-xl w-56 h-56 md:w-72 md:h-72 flex items-center justify-center" style="border-color: var(--border-accent);">
-              <span class="text-lg font-bold" style="color: var(--text-muted);">FOTO</span>
+    <div bind:this={heroImage} class="flex justify-center">
+      <!-- Common wrapper so .profil-glow positions relative to the frame -->
+      <div class="relative" style="width: fit-content;">
+        <!-- Glow behind frame -->
+        <div class="profil-glow"></div>
+
+        <!-- Animated shine frame — outer rotates, inner counter-rotates to keep content upright -->
+        <div class="profil-frame relative z-10">
+          <div class="profil-frame-inner" style="width: 260px; height: 260px;">
+            <!-- Placeholder — replace src with your actual photo -->
+            <div
+              class="w-full h-full flex items-center justify-center font-bold text-xl"
+              style="color: var(--text-muted); background: var(--bg-surface);"
+            >
+              FOTO
             </div>
           </div>
         </div>
-        <div class="absolute -top-4 -right-4 w-24 h-24 rounded-full backdrop-blur-sm" style="background: rgba(144,39,241,0.18);"></div>
-        <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full backdrop-blur-sm" style="background: rgba(212,72,247,0.12);"></div>
       </div>
     </div>
 
