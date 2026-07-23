@@ -1,5 +1,5 @@
 // utils/gsapAnimations.ts
-import { gsap, ScrollTrigger, ScrollToPlugin } from './gsapSetup';
+import { gsap } from './gsapSetup';
 
 // Fungsi untuk animasi scroll ke section
 export const scrollToSection = (sectionId: string) => {

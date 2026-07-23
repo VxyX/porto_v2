@@ -1,9 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { personalInfo } from '../data/portfolioData';
   import { gsap, ScrollTrigger } from '../utils/gsapSetup';
+  import { scrollToSection } from '../utils/gsapAnimations';
+  import { currentLang } from '../stores/langStore';
+  import { getPortfolioData } from '../data/portfolioData';
 
   let footerEl: HTMLElement;
+
+  $: activeData = getPortfolioData($currentLang);
+  $: footerText = activeData.footer;
+  $: personalInfo = activeData.personalInfo;
+  $: navItems = activeData.nav;
 
   onMount(() => {
     const ctx = gsap.context(() => {
@@ -57,7 +64,7 @@
           <span class="mr-2">&lt;/&gt;</span> Porto V2
         </div>
         <p class="mb-6 max-w-xs" style="color: var(--text-muted);">
-          Mewujudkan ide menjadi solusi digital yang inovatif dan fungsional.
+          {footerText.tagline}
         </p>
         <div class="flex space-x-4">
           {#each [
@@ -68,7 +75,7 @@
           ] as social}
             <a
               href={social.url}
-              class="footer-social-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              class="footer-social-icon w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
               style="background: var(--bg-card); color: var(--text-secondary);"
               aria-label={social.name}
               target="_blank"
@@ -86,20 +93,21 @@
 
       <!-- Nav -->
       <div>
-        <h3 class="text-lg font-semibold mb-6" style="color: var(--text-primary);">Navigasi</h3>
+        <h3 class="text-lg font-semibold mb-6" style="color: var(--text-primary);">{footerText.navTitle}</h3>
         <ul class="footer-nav space-y-3">
-          {#each ['Beranda', 'Tentang', 'Keterampilan', 'Proyek', 'Kontak'] as item}
+          {#each navItems as item}
             <li>
               <a
-                href="#{item.toLowerCase()}"
-                class="footer-nav-item transition-colors duration-300"
+                href="#{item.key}"
+                class="footer-nav-item transition-colors duration-300 cursor-pointer"
                 style="color: var(--text-muted);"
+                on:click|preventDefault={() => scrollToSection(item.key)}
                 on:mouseover={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--theme-purple)'}
                 on:mouseleave={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'}
                 on:focus={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--theme-purple)'}
                 on:blur={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'}
               >
-                {item}
+                {item.label}
               </a>
             </li>
           {/each}
@@ -108,7 +116,7 @@
 
       <!-- Contact -->
       <div>
-        <h3 class="text-lg font-semibold mb-6" style="color: var(--text-primary);">Kontak</h3>
+        <h3 class="text-lg font-semibold mb-6" style="color: var(--text-primary);">{footerText.contactTitle}</h3>
         <ul class="footer-contact space-y-3">
           {#each [
             { icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', text: personalInfo.email },
@@ -128,7 +136,7 @@
 
     <div class="footer-copy border-t mt-12 pt-8 text-center" style="border-color: var(--border-subtle);">
       <p style="color: var(--text-muted);">
-        &copy; {new Date().getFullYear()} Porto V2. Dibuat dengan ❤️ menggunakan Svelte.
+        &copy; {new Date().getFullYear()} Porto V2. {footerText.copyright}
       </p>
     </div>
   </div>

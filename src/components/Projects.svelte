@@ -1,9 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { gsap, ScrollTrigger } from '../utils/gsapSetup';
-  import { projects } from '../data/portfolioData';
+  import { currentLang } from '../stores/langStore';
+  import { getPortfolioData } from '../data/portfolioData';
 
   let projectsSection: HTMLElement;
+
+  $: activeData = getPortfolioData($currentLang);
+  $: projectsText = activeData.projectsSection;
+  $: projects = activeData.projects;
 
   onMount(() => {
     const ctx = gsap.context(() => {
@@ -50,11 +55,11 @@
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <h2 class="projects-title text-4xl font-bold text-center mb-8"
       style="color: var(--text-primary);">
-      Portfolio Proyek
+      {projectsText.title}
     </h2>
     <p class="projects-subtitle text-center max-w-2xl mx-auto mb-16"
       style="color: var(--text-muted);">
-      Berikut adalah beberapa proyek yang telah saya kerjakan selama ini
+      {projectsText.subtitle}
     </p>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
@@ -69,7 +74,7 @@
               alt={project.title}
               class="w-full h-56 object-cover transition-transform duration-500 hover:scale-110"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-80"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
           </div>
 
           <div class="p-6">
@@ -97,7 +102,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                 </svg>
-                Lihat Proyek
+                {projectsText.viewProject}
               </a>
               <a
                 href={project.github}
@@ -108,7 +113,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                 </svg>
-                Kode
+                {projectsText.viewCode}
               </a>
             </div>
           </div>
@@ -121,7 +126,7 @@
         class="projects-more-btn px-8 py-4 text-white rounded-full font-medium transition-opacity duration-300 hover:opacity-90"
         style="background: var(--theme-grad);"
       >
-        Lihat Lebih Banyak Proyek
+        {projectsText.moreProjects}
       </button>
     </div>
   </div>

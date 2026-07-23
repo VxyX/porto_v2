@@ -1,9 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { gsap, ScrollTrigger } from '../utils/gsapSetup';
-  import { personalInfo } from '../data/portfolioData';
+  import { currentLang } from '../stores/langStore';
+  import { getPortfolioData } from '../data/portfolioData';
 
   let aboutSection: HTMLElement;
+
+  $: activeData = getPortfolioData($currentLang);
+  $: aboutText = activeData.about;
+  $: personalInfo = activeData.personalInfo;
 
   onMount(() => {
     const ctx = gsap.context(() => {
@@ -66,7 +71,7 @@
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <h2 class="about-title text-4xl font-bold text-center mb-16"
       style="color: var(--text-primary);">
-      Tentang Saya
+      {aboutText.title}
     </h2>
 
     <div class="grid lg:grid-cols-2 gap-16 items-start">
@@ -83,14 +88,14 @@
         >
           <h3 class="text-xl font-semibold mb-6 flex items-center" style="color: var(--text-primary);">
             <span class="w-3 h-3 rounded-full mr-3" style="background: var(--theme-purple);"></span>
-            Detail Profil
+            {aboutText.profileDetail}
           </h3>
           <div class="space-y-4">
             {#each [
-              { icon: '🗺️', label: 'Lokasi', value: personalInfo.location },
-              { icon: '✉️', label: 'Email',  value: personalInfo.email },
-              { icon: '📞', label: 'Telepon', value: personalInfo.phone },
-              { icon: '💼', label: 'Status',  value: personalInfo.availability },
+              { icon: '🗺️', label: aboutText.labels.location, value: personalInfo.location },
+              { icon: '✉️', label: aboutText.labels.email,    value: personalInfo.email },
+              { icon: '📞', label: aboutText.labels.phone,    value: personalInfo.phone },
+              { icon: '💼', label: aboutText.labels.status,   value: personalInfo.availability },
             ] as detail}
               <div class="detail-item flex items-start py-2">
                 <span class="text-2xl mr-4">{detail.icon}</span>
@@ -112,7 +117,7 @@
         >
           <h3 class="text-2xl font-bold mb-8 flex items-center" style="color: var(--text-primary);">
             <span class="w-3 h-3 rounded-full mr-3" style="background: var(--theme-pink);"></span>
-            Teknologi &amp; Keterampilan
+            {aboutText.techSkills}
           </h3>
           <div class="space-y-6">
             {#each ['JavaScript','TypeScript','Svelte','React','Node.js','Python','TailwindCSS','GraphQL'] as skill, i}
@@ -130,10 +135,7 @@
         </div>
 
         <div class="about-stats grid grid-cols-2 gap-4">
-          {#each [
-            { stat: '5+',  label: 'Tahun Pengalaman' },
-            { stat: '50+', label: 'Proyek Selesai'   },
-          ] as item}
+          {#each aboutText.stats as item}
             <div
               class="about-stat p-6 rounded-2xl border text-center hover-lift"
               style="background: var(--bg-card); border-color: var(--border-subtle);"

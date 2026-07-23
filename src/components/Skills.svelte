@@ -1,9 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { gsap, ScrollTrigger } from '../utils/gsapSetup';
-  import { skills } from '../data/portfolioData';
+  import { currentLang } from '../stores/langStore';
+  import { getPortfolioData } from '../data/portfolioData';
 
   let skillsSection: HTMLElement;
+
+  $: activeData = getPortfolioData($currentLang);
+  $: skillsText = activeData.skillsSection;
+  $: skills = activeData.skills;
 
   onMount(() => {
     const ctx = gsap.context(() => {
@@ -73,17 +78,17 @@
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <h2 class="skills-title text-4xl font-bold text-center mb-6"
       style="color: var(--text-primary);">
-      Keterampilan &amp; Keahlian
+      {skillsText.title}
     </h2>
     <p class="skills-subtitle text-center max-w-2xl mx-auto mb-16"
       style="color: var(--text-muted);">
-      Berikut adalah teknologi dan keterampilan yang saya kuasai dalam pengembangan perangkat lunak
+      {skillsText.subtitle}
     </p>
 
     <div class="skills-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {#each skills as skill}
         <div
-          class="skill-card rounded-2xl p-6 border hover-lift transition-all duration-300"
+          class="skill-card rounded-2xl p-6 border hover-lift transition-colors duration-300"
           style="background: var(--bg-card); border-color: var(--border-subtle);"
         >
           <div class="flex items-center mb-4">
@@ -100,7 +105,7 @@
           </div>
 
           <div class="mb-2 flex justify-between">
-            <span style="color: var(--text-muted);">Tingkat Keahlian</span>
+            <span style="color: var(--text-muted);">{skillsText.skillLevel}</span>
             <span class="font-medium" style="color: var(--theme-pink);">{skill.level}%</span>
           </div>
           <div class="skill-bar">
@@ -115,12 +120,12 @@
       style="background: var(--bg-card); border-color: var(--border-subtle);"
     >
       <h3 class="text-2xl font-bold text-center mb-8" style="color: var(--text-primary);">
-        Keterampilan Tambahan
+        {skillsText.additionalTitle}
       </h3>
       <div class="add-skills-grid grid grid-cols-2 md:grid-cols-4 gap-6">
         {#each ['Git & GitHub','Docker','CI/CD','Testing','Agile/Scrum','REST APIs','GraphQL','Cloud'] as additionalSkill}
           <div
-            class="add-skill-chip flex flex-col items-center p-4 rounded-xl transition-all duration-300 cursor-default border border-transparent"
+            class="add-skill-chip flex flex-col items-center p-4 rounded-xl transition-colors duration-300 cursor-default border border-transparent"
             style="background: var(--bg-card-hover);"
           >
             <div class="text-2xl mb-2">⚙️</div>

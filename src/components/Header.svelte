@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { gsap } from '../utils/gsapSetup';
   import { scrollToSection } from '../utils/gsapAnimations';
+  import { currentLang, setLanguage, type Language } from '../stores/langStore';
+  import { getPortfolioData } from '../data/portfolioData';
 
   export let isDark: boolean = true;
   export let toggleTheme: () => void = () => {};
@@ -9,26 +11,31 @@
   let header: HTMLElement;
   let mobileMenuOpen = false;
 
-  const navItems = ['Beranda', 'Tentang', 'Keterampilan', 'Proyek', 'Kontak'];
+  $: activeData = getPortfolioData($currentLang);
 
   onMount(() => {
-    gsap.from(header, {
-      y: -100,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    const items = document.querySelectorAll('.nav-item');
-    items.forEach((item, index) => {
-      gsap.from(item, {
-        opacity: 0,
-        y: -20,
-        duration: 0.5,
-        delay: 0.2 + index * 0.1,
-        ease: 'power2.out',
-      });
-    });
+      tl.fromTo(
+        header,
+        { y: -100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 }
+      ).fromTo(
+        '.nav-item',
+        { y: -20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'power2.out',
+        },
+        '-=0.4'
+      );
+    }, header);
+
+    return () => ctx.revert();
   });
 
   function toggleMobileMenu() {
@@ -55,18 +62,18 @@
 
     <!-- Desktop Navigation -->
     <div class="hidden md:flex items-center space-x-1">
-      {#each navItems as item}
+      {#each activeData.nav as item}
         <a
-          href="#{item.toLowerCase()}"
-          class="nav-item px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer relative group text-sm font-medium"
+          href="#{item.key}"
+          class="nav-item px-4 py-2 rounded-lg transition-colors duration-300 cursor-pointer relative group text-sm font-medium"
           style="color: var(--text-secondary);"
-          on:click|preventDefault={() => scrollToSection(item.toLowerCase())}
+          on:click|preventDefault={() => scrollToSection(item.key)}
           on:mouseover={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
           on:mouseleave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
           on:focus={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
           on:blur={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
         >
-          {item}
+          {item.label}
           <!-- Underline accent -->
           <span
             class="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full rounded-full"
@@ -74,6 +81,19 @@
           ></span>
         </a>
       {/each}
+
+      <!-- Language Selector -->
+      <div class="flex items-center gap-1 p-1 rounded-full border ml-3 text-xs font-semibold" style="background: var(--bg-card); border-color: var(--border-subtle);">
+        {#each ['id', 'en', 'jp'] as lang}
+          <button
+            class="px-2.5 py-1 rounded-full transition-all duration-200 uppercase"
+            style={$currentLang === lang ? 'background: var(--theme-purple); color: #fff;' : 'color: var(--text-muted); background: transparent;'}
+            on:click={() => setLanguage(lang as Language)}
+          >
+            {lang}
+          </button>
+        {/each}
+      </div>
 
       <!-- Theme toggle -->
       <button
@@ -104,8 +124,21 @@
       </button>
     </div>
 
-    <!-- Mobile: hamburger + theme toggle -->
+    <!-- Mobile: language toggle + hamburger + theme toggle -->
     <div class="md:hidden flex items-center gap-2">
+      <!-- Language Selector Mobile -->
+      <div class="flex items-center gap-1 p-0.5 rounded-full border text-xs font-semibold" style="background: var(--bg-card); border-color: var(--border-subtle);">
+        {#each ['id', 'en', 'jp'] as lang}
+          <button
+            class="px-2 py-0.5 rounded-full transition-all duration-200 uppercase text-[10px]"
+            style={$currentLang === lang ? 'background: var(--theme-purple); color: #fff;' : 'color: var(--text-muted); background: transparent;'}
+            on:click={() => setLanguage(lang as Language)}
+          >
+            {lang}
+          </button>
+        {/each}
+      </div>
+
       <button
         class="theme-toggle"
         on:click={toggleTheme}
@@ -155,18 +188,18 @@
       class="md:hidden mt-4 py-4 px-6 rounded-xl shadow-lg border"
       style="background: var(--bg-card); border-color: var(--border-subtle);"
     >
-      {#each navItems as item}
+      {#each activeData.nav as item}
         <a
-          href="#{item.toLowerCase()}"
+          href="#{item.key}"
           class="block py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer mb-2"
           style="color: var(--text-secondary);"
-          on:click|preventDefault={() => { scrollToSection(item.toLowerCase()); mobileMenuOpen = false; }}
+          on:click|preventDefault={() => { scrollToSection(item.key); mobileMenuOpen = false; }}
           on:mouseover={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)')}
           on:mouseleave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
           on:focus={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)')}
           on:blur={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
         >
-          {item}
+          {item.label}
         </a>
       {/each}
     </div>
