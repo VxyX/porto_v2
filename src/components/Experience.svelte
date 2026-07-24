@@ -58,7 +58,7 @@
 <section
   id="pengalaman"
   bind:this={expSection}
-  class="relative py-20"
+  class="relative py-20 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <!-- Ambient orbs -->

@@ -49,7 +49,7 @@
 <section
   id="kontak"
   bind:this={contactSection}
-  class="relative py-20"
+  class="relative py-20 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <div class="absolute top-1/4 right-1/4 w-64 h-64 rounded-full blur-3xl"

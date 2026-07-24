@@ -74,12 +74,17 @@
   box-sizing: border-box;
 }
 
-html {
-  /* Removed scroll-behavior: smooth — GSAP ScrollToPlugin handles this */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
 }
 
 body {
-  margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background-color: var(--bg-base);
@@ -89,13 +94,14 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
-#app {
+#app,
+.bg-main {
   max-width: 100%;
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* =====================================================================

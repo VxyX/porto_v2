@@ -45,7 +45,7 @@
 
 <nav
   bind:this={header}
-  class="fixed top-0 w-full z-50 py-4 px-6 shadow-lg border-b"
+  class="fixed top-0 left-0 right-0 w-full max-w-[100vw] z-50 py-4 px-6 shadow-lg border-b"
   style="
     background: var(--bg-nav);
     backdrop-filter: blur(18px);

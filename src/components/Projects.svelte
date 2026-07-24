@@ -44,7 +44,7 @@
 <section
   id="proyek"
   bind:this={projectsSection}
-  class="relative py-20"
+  class="relative py-20 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <div class="absolute top-1/3 left-1/4 w-72 h-72 rounded-full blur-3xl"

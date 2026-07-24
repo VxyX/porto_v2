@@ -59,7 +59,7 @@
 <section
   id="tentang"
   bind:this={aboutSection}
-  class="relative py-20"
+  class="relative py-20 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <!-- Orbs -->

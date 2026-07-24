@@ -131,7 +131,7 @@
 
         <!-- Animated shine frame — outer rotates, inner counter-rotates -->
         <div class="profil-frame relative z-10">
-          <div class="profil-frame-inner" style="width: 200px; height: 200px;">
+          <div class="profil-frame-inner w-[160px] h-[160px] sm:w-[210px] sm:h-[210px]">
             <img
               src={personalInfo.image}
               alt={personalInfo.name}

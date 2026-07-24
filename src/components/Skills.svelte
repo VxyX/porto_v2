@@ -67,7 +67,7 @@
 <section
   id="keterampilan"
   bind:this={skillsSection}
-  class="relative py-20"
+  class="relative py-20 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <div class="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl"
