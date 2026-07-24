@@ -121,7 +121,7 @@
   <div class="animated-bg-element bg-blue hero-orb-pink"></div>
 
   <div
-    class="max-w-3xl mx-auto px-6 flex flex-col items-center text-center relative z-10"
+    class="max-w-5xl w-full mx-auto px-6 flex flex-col items-center text-center relative z-10"
   >
     <!-- Profile Image (Centered Top) -->
     <div bind:this={heroImage} class="flex justify-center mb-6">
@@ -131,7 +131,7 @@
 
         <!-- Animated shine frame — outer rotates, inner counter-rotates -->
         <div class="profil-frame relative z-10">
-          <div class="profil-frame-inner" style="width: 210px; height: 210px;">
+          <div class="profil-frame-inner" style="width: 200px; height: 200px;">
             <img
               src={personalInfo.image}
               alt={personalInfo.name}
@@ -143,7 +143,7 @@
     </div>
 
     <!-- Text Side (Centered) -->
-    <div class="flex flex-col items-center text-center max-w-xl">
+    <div class="flex flex-col items-center text-center w-full max-w-3xl">
       <p
         class="hero-greeting text-lg mb-2 font-medium"
         style="color: var(--theme-pink);"
@@ -151,13 +151,16 @@
         {heroText.greeting}
       </p>
 
-      <h1 bind:this={heroTitle} class="text-hero font-bold mb-3">
+      <h1
+        bind:this={heroTitle}
+        class="text-hero font-bold mb-3 sm:whitespace-nowrap"
+      >
         <span class="text-gradient-purple">{personalInfo.name}</span>
       </h1>
 
       <p
         bind:this={heroSubtitle}
-        class="text-subhero mb-6 font-medium"
+        class="text-subhero mb-6 font-bold"
         style="color: var(--text-secondary);"
       >
         {personalInfo.title}
@@ -184,6 +187,37 @@
         >
           {heroText.viewProjects}
         </button>
+        <a
+          href={heroText.cvFile}
+          download
+          class="hero-btn-secondary font-bold py-3.5 px-8 rounded-full transition-colors duration-300 flex items-center gap-2"
+          style="border: 2px solid var(--theme-purple); color: var(--theme-purple); background: transparent;"
+          on:mouseover={(e) => {
+            (e.currentTarget as HTMLElement).style.background =
+              "var(--theme-purple)";
+            (e.currentTarget as HTMLElement).style.color = "#fff";
+          }}
+          on:mouseleave={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
+            (e.currentTarget as HTMLElement).style.color =
+              "var(--theme-purple)";
+          }}
+          on:focus={(e) => {
+            (e.currentTarget as HTMLElement).style.background =
+              "var(--theme-purple)";
+            (e.currentTarget as HTMLElement).style.color = "#fff";
+          }}
+          on:blur={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
+            (e.currentTarget as HTMLElement).style.color =
+              "var(--theme-purple)";
+          }}
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          {heroText.downloadCv}
+        </a>
         <button
           class="hero-btn-secondary font-bold py-3.5 px-8 rounded-full transition-colors duration-300"
           style="border: 2px solid var(--theme-purple); color: var(--theme-purple); background: transparent;"

@@ -106,6 +106,24 @@
               </div>
             {/each}
           </div>
+
+          <div class="mt-6 pt-4 border-t" style="border-color: var(--border-subtle);">
+            <a
+              href={activeData.hero.cvFile}
+              download
+              class="w-full py-3 px-4 rounded-xl font-semibold text-center flex items-center justify-center gap-2 transition-all duration-300 border"
+              style="background: var(--bg-card-hover); color: var(--theme-pink); border-color: var(--border-subtle);"
+              on:mouseover={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--theme-purple)'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              on:mouseleave={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-card-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--theme-pink)'; }}
+              on:focus={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--theme-purple)'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              on:blur={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-card-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--theme-pink)'; }}
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              {activeData.hero.downloadCv}
+            </a>
+          </div>
         </div>
       </div>
 
