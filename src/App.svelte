@@ -38,8 +38,8 @@
 </script>
 
 <div class="bg-main min-h-screen">
-  <Header {isDark} {toggleTheme} />
   <Hero />
+  <Header {isDark} {toggleTheme} />
   <About />
   <Experience />
   <Skills />

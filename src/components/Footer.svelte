@@ -4,6 +4,7 @@
   import { scrollToSection } from '../utils/gsapAnimations';
   import { currentLang } from '../stores/langStore';
   import { getPortfolioData } from '../data/portfolioData';
+  import SocialIcon from './SocialIcon.svelte';
 
   let footerEl: HTMLElement;
 
@@ -11,6 +12,7 @@
   $: footerText = activeData.footer;
   $: personalInfo = activeData.personalInfo;
   $: navItems = activeData.nav;
+  $: socialLinks = activeData.socialLinks;
 
   onMount(() => {
     const ctx = gsap.context(() => {
@@ -67,17 +69,12 @@
           {footerText.tagline}
         </p>
         <div class="flex space-x-4">
-          {#each [
-            { name: 'github',   url: 'https://github.com',   icon: 'G' },
-            { name: 'linkedin', url: 'https://linkedin.com', icon: 'L' },
-            { name: 'twitter',  url: 'https://twitter.com',  icon: 'X' },
-            { name: 'dribbble', url: 'https://dribbble.com', icon: 'D' },
-          ] as social}
+          {#each socialLinks as social}
             <a
               href={social.url}
               class="footer-social-icon w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
               style="background: var(--bg-card); color: var(--text-secondary);"
-              aria-label={social.name}
+              aria-label={social.platform}
               target="_blank"
               rel="noopener noreferrer"
               on:mouseover={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--theme-purple)'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
@@ -85,7 +82,7 @@
               on:focus={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--theme-purple)'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
               on:blur={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-card)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
             >
-              {social.icon}
+              <SocialIcon icon={social.icon} size={18} />
             </a>
           {/each}
         </div>

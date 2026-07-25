@@ -10,20 +10,33 @@
 
   let header: HTMLElement;
   let mobileMenuOpen = false;
+  let isSticky = false;
 
   $: activeData = getPortfolioData($currentLang);
 
   onMount(() => {
+    const handleScroll = () => {
+      const hero = document.getElementById('beranda');
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        // Stick to top as soon as Hero section bottom reaches near top of window
+        isSticky = heroRect.bottom <= 60;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.fromTo(
         header,
-        { y: -100, opacity: 0 },
+        { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8 }
       ).fromTo(
         '.nav-item',
-        { y: -20, opacity: 0 },
+        { y: -10, opacity: 0 },
         {
           y: 0,
           opacity: 1,
@@ -35,7 +48,10 @@
       );
     }, header);
 
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      ctx.revert();
+    };
   });
 
   function toggleMobileMenu() {
@@ -43,16 +59,17 @@
   }
 </script>
 
-<nav
-  bind:this={header}
-  class="fixed top-0 left-0 right-0 w-full max-w-[100vw] z-50 py-4 px-6 shadow-lg border-b"
-  style="
-    background: var(--bg-nav);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-color: var(--border-subtle);
-  "
->
+<div class="relative w-full z-50 min-h-[68px]">
+  <nav
+    bind:this={header}
+    class="{isSticky ? 'fixed top-0 left-0 right-0 shadow-2xl border-b' : 'relative border-y'} w-full z-50 py-4 px-6 transition-all duration-300"
+    style="
+      background: var(--bg-nav);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: var(--border-subtle);
+    "
+  >
   <div class="max-w-7xl mx-auto flex justify-between items-center">
 
     <!-- Brand -->
@@ -205,3 +222,4 @@
     </div>
   {/if}
 </nav>
+</div>

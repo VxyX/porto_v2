@@ -123,7 +123,7 @@
         {skillsText.additionalTitle}
       </h3>
       <div class="add-skills-grid grid grid-cols-2 md:grid-cols-4 gap-6">
-        {#each ['Git & GitHub','Docker','CI/CD','Testing','Agile/Scrum','REST APIs','GraphQL','Cloud'] as additionalSkill}
+        {#each ['RESTful APIs', 'Dead Letter Queue (DLQ)', 'Owl.js', 'PyQt', 'Svelte', 'Tesseract OCR', 'HTML & CSS', 'System Migration'] as additionalSkill}
           <div
             class="add-skill-chip flex flex-col items-center p-4 rounded-xl transition-colors duration-300 cursor-default border border-transparent"
             style="background: var(--bg-card-hover);"

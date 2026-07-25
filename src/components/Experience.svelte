@@ -53,6 +53,16 @@
     if (type === 'work') return '💼';
     return '🚀';
   }
+
+  function getTagStyle(type: string) {
+    if (type === 'education') {
+      return 'background: rgba(144, 39, 241, 0.12); color: var(--theme-pink-l); border-color: rgba(144, 39, 241, 0.35);';
+    }
+    if (type === 'work') {
+      return 'background: rgba(212, 72, 247, 0.12); color: var(--theme-pink); border-color: rgba(212, 72, 247, 0.35);';
+    }
+    return 'background: rgba(59, 130, 246, 0.12); color: #60a5fa; border-color: rgba(59, 130, 246, 0.35);';
+  }
 </script>
 
 <section
@@ -124,15 +134,25 @@
               {exp.company}
             </div>
 
-            <p class="mb-5 leading-relaxed text-sm" style="color: var(--text-secondary);">
-              {exp.description}
-            </p>
+            {#if exp.description}
+              <p class="mb-3 leading-relaxed text-sm whitespace-pre-line" style="color: var(--text-secondary);">
+                {exp.description}
+              </p>
+            {/if}
+
+            {#if exp.details && exp.details.length > 0}
+              <ul class="mb-5 space-y-1.5 text-sm list-disc list-inside leading-relaxed" style="color: var(--text-secondary);">
+                {#each exp.details as detail}
+                  <li>{detail}</li>
+                {/each}
+              </ul>
+            {/if}
 
             <div class="flex flex-wrap gap-2">
               {#each exp.technologies as tech}
                 <span
-                  class="px-3 py-1 text-xs rounded-lg font-medium border"
-                  style="background: var(--bg-card-hover); color: var(--text-secondary); border-color: var(--border-subtle);"
+                  class="px-3 py-1 text-xs rounded-lg font-medium border transition-colors duration-200"
+                  style={getTagStyle(exp.type)}
                 >
                   {tech}
                 </span>

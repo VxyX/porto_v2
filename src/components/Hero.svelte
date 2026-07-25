@@ -4,6 +4,7 @@
   import { scrollToSection } from "../utils/gsapAnimations";
   import { currentLang } from "../stores/langStore";
   import { getPortfolioData } from "../data/portfolioData";
+  import SocialIcon from "./SocialIcon.svelte";
 
   let heroTitle: HTMLElement;
   let heroSubtitle: HTMLElement;
@@ -13,6 +14,7 @@
   $: activeData = getPortfolioData($currentLang);
   $: personalInfo = activeData.personalInfo;
   $: heroText = activeData.hero;
+  $: socialLinks = activeData.socialLinks;
 
   onMount(() => {
     // gsap.context() with scope — all selectors match only within heroSection
@@ -113,7 +115,7 @@
 <section
   id="beranda"
   bind:this={heroSection}
-  class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden"
+  class="relative min-h-[calc(100vh-68px)] flex flex-col justify-center items-center py-8 overflow-hidden"
   style="background-color: var(--bg-base);"
 >
   <!-- Ambient orbs -->
@@ -121,17 +123,17 @@
   <div class="animated-bg-element bg-blue hero-orb-pink"></div>
 
   <div
-    class="max-w-5xl w-full mx-auto px-6 flex flex-col items-center text-center relative z-10"
+    class="max-w-4xl w-full mx-auto px-6 flex flex-col items-center text-center relative z-10 my-auto"
   >
     <!-- Profile Image (Centered Top) -->
-    <div bind:this={heroImage} class="flex justify-center mb-6">
+    <div bind:this={heroImage} class="flex justify-center mb-5">
       <div class="relative" style="width: fit-content;">
         <!-- Glow behind frame -->
         <div class="profil-glow"></div>
 
         <!-- Animated shine frame — outer rotates, inner counter-rotates -->
         <div class="profil-frame relative z-10">
-          <div class="profil-frame-inner w-[160px] h-[160px] sm:w-[210px] sm:h-[210px]">
+          <div class="profil-frame-inner w-[145px] h-[145px] sm:w-[185px] sm:h-[185px]">
             <img
               src={personalInfo.image}
               alt={personalInfo.name}
@@ -145,7 +147,7 @@
     <!-- Text Side (Centered) -->
     <div class="flex flex-col items-center text-center w-full max-w-3xl">
       <p
-        class="hero-greeting text-lg mb-2 font-medium"
+        class="hero-greeting text-base sm:text-lg mb-1.5 font-medium"
         style="color: var(--theme-pink);"
       >
         {heroText.greeting}
@@ -153,21 +155,21 @@
 
       <h1
         bind:this={heroTitle}
-        class="text-hero font-bold mb-3 sm:whitespace-nowrap"
+        class="text-3xl sm:text-5xl font-extrabold mb-3 sm:whitespace-nowrap"
       >
         <span class="text-gradient-purple">{personalInfo.name}</span>
       </h1>
 
       <p
         bind:this={heroSubtitle}
-        class="text-subhero mb-6 font-bold"
+        class="text-base sm:text-xl mb-4 font-bold"
         style="color: var(--text-secondary);"
       >
         {personalInfo.title}
       </p>
 
       <div
-        class="hero-bio mb-8 leading-relaxed space-y-1.5"
+        class="hero-bio text-xs sm:text-base mb-6 leading-relaxed max-w-xl space-y-1.5"
         style="color: var(--text-secondary);"
       >
         {@html personalInfo.intro}
@@ -175,14 +177,14 @@
 
       <!-- Accent gradient line divider -->
       <div
-        class="w-44 h-1 rounded-full mb-8"
+        class="w-40 h-1 rounded-full mb-6"
         style="background: var(--theme-grad);"
       ></div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-wrap justify-center gap-4 mb-8">
+      <div class="flex flex-wrap justify-center gap-3.5 mb-6">
         <button
-          class="hero-btn-primary bg-gradient-purple-pink text-white font-bold py-3.5 px-8 rounded-full"
+          class="hero-btn-primary bg-gradient-purple-pink text-white font-bold py-3 px-7 rounded-full text-xs sm:text-sm"
           on:click={() => scrollToSection("proyek")}
         >
           {heroText.viewProjects}
@@ -190,7 +192,7 @@
         <a
           href={heroText.cvFile}
           download
-          class="hero-btn-secondary font-bold py-3.5 px-8 rounded-full transition-colors duration-300 flex items-center gap-2"
+          class="hero-btn-secondary font-bold py-3 px-7 rounded-full text-xs sm:text-sm transition-colors duration-300 flex items-center gap-2"
           style="border: 2px solid var(--theme-purple); color: var(--theme-purple); background: transparent;"
           on:mouseover={(e) => {
             (e.currentTarget as HTMLElement).style.background =
@@ -219,7 +221,7 @@
           {heroText.downloadCv}
         </a>
         <button
-          class="hero-btn-secondary font-bold py-3.5 px-8 rounded-full transition-colors duration-300"
+          class="hero-btn-secondary font-bold py-3 px-7 rounded-full text-xs sm:text-sm transition-colors duration-300"
           style="border: 2px solid var(--theme-purple); color: var(--theme-purple); background: transparent;"
           on:click={() => scrollToSection("kontak")}
           on:mouseover={(e) => {
@@ -249,12 +251,12 @@
 
       <!-- Social icons -->
       <div class="flex justify-center space-x-4">
-        {#each [{ name: "github", url: "https://github.com", icon: "G" }, { name: "linkedin", url: "https://linkedin.com", icon: "L" }, { name: "twitter", url: "https://twitter.com", icon: "X" }, { name: "email", url: "mailto:programmer@contoh.com", icon: "E" }] as social}
+        {#each socialLinks as social}
           <a
             href={social.url}
-            class="hero-social-icon w-11 h-11 rounded-full flex items-center justify-center font-bold transition-colors duration-300"
+            class="hero-social-icon w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors duration-300"
             style="background: var(--bg-card); color: var(--text-secondary);"
-            aria-label={social.name}
+            aria-label={social.platform}
             target="_blank"
             rel="noopener noreferrer"
             on:mouseover={(e) => {
@@ -280,7 +282,7 @@
                 "var(--text-secondary)";
             }}
           >
-            {social.icon}
+            <SocialIcon icon={social.icon} size={20} />
           </a>
         {/each}
       </div>
