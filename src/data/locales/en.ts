@@ -17,8 +17,8 @@ export const enData = {
   personalInfo: {
     name: 'Muhammad Farhan Roesfiazhar',
     title: 'Software Engineer',
-    intro: `<p>Passionate Backend & Web Developer</p><p>Also passionate about digital drawing <s>and 3D modeling</s></p>`,
-    bio: 'Hi! I’m a Software Engineer with 1.5 years of experience specializing in backend development and system integration. On a daily basis, I navigate complex data workflows and build solid systems using Python, JavaScript, FastAPI, Redis, and Docker.\n\nWhen I’m not coding, I attempt digital drawing—which mostly means having a canvas full of unfinished WIPs, endless layers of re-sketches, and cursing at myself for not getting the colors and proportions right (╯°□°)╯︵ ┻━┻. Unlike my artwork, at least my code actually reaches production and stays clean! ✨\n\nAlways eager to tackle tough technical challenges, optimize backends, and collaborate on cool projects! ( •̀ᴗ•́ )و ̑̑',
+    intro: `<p>Passionate Fullstack Developer</p><p>Also passionate about digital drawing <s>and 3D modeling</s></p>`,
+    bio: 'Hi! I’m a Software Engineer with 1.5 years of experience specializing in backend development and system integration. On a daily basis, my primary focus is navigating complex data workflows and building solid, reliable systems using Python, JavaScript, FastAPI, Redis, and Docker.\n\nOutside of coding—when I’m not watching anime or bored of playing games—I enjoy spending time in digital drawing—though to be honest, it’s mostly unfinished WIP files hanging around, endless layers of re-sketches, and cursing at myself for not getting the proportions and colors right (╯°□°)╯︵ ┻━┻. But don’t worry, unlike my drawings, my code is guaranteed clean, solid, and actually makes it all the way to production! ✨\n\nI’m always eager to tackle tough technical challenges, optimize backends, and collaborate on exciting projects! ( •̀ᴗ•́ )و ̑̑',
     location: 'Indonesia',
     email: 'muhfarhanr10@gmail.com',
     phone: '+62 878-2372-5457',

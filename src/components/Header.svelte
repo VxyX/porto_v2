@@ -13,6 +13,7 @@
   let isSticky = false;
 
   $: activeData = getPortfolioData($currentLang);
+  $: personalInfo = activeData.personalInfo;
 
   onMount(() => {
     const handleScroll = () => {
@@ -74,7 +75,7 @@
 
     <!-- Brand -->
     <div class="text-xl font-bold text-gradient-purple flex items-center select-none">
-      <span class="mr-2">&lt;/&gt;</span> Porto V2
+      <span class="mr-2">&lt;/&gt;</span> MFR
     </div>
 
     <!-- Desktop Navigation -->
