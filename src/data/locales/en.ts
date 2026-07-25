@@ -21,7 +21,7 @@ export const enData = {
     bio: 'Hi! I’m a Software Engineer with 1.5 years of experience specializing in backend development and system integration. On a daily basis, I navigate complex data workflows and build solid systems using Python, JavaScript, FastAPI, Redis, and Docker.\n\nWhen I’m not coding, I attempt digital drawing—which mostly means having a canvas full of unfinished WIPs, endless layers of re-sketches, and cursing at myself for not getting the colors and proportions right (╯°□°)╯︵ ┻━┻. Unlike my artwork, at least my code actually reaches production and stays clean! ✨\n\nAlways eager to tackle tough technical challenges, optimize backends, and collaborate on cool projects! ( •̀ᴗ•́ )و ̑̑',
     location: 'Indonesia',
     email: 'muhfarhanr10@gmail.com',
-    phone: '+62 878 2372 5457',
+    phone: '+62 878-2372-5457',
     availability: 'Open for opportunities',
     image: '/img/profil2.jpg',
   },

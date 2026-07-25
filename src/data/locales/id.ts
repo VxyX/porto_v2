@@ -21,7 +21,7 @@ export const idData = {
     bio: 'Halo! Saya adalah seorang Software Engineer dengan pengalaman 1,5 tahun yang berfokus pada backend development dan integrasi sistem. Sehari-hari, saya menangani alur data yang kompleks dan membangun sistem yang handal menggunakan Python, JavaScript, FastAPI, Redis, dan Docker.\n\nSaat tidak sedang mengoding, saya mencoba menggambar digital—yang sebagian besar artinya canvas penuh dengan file WIP yang belum selesai, layer sketsa ulang yang tidak ada habisnya, dan merutuki diri sendiri karena warna dan proporsinya tidak pernah pas (╯°□°)╯︵ ┻━┻. Tapi tenang, tidak seperti karya seni saya, setidaknya kode saya benar-benar sampai ke tahap produksi dan tetap bersih! ✨\n\nSelalu antusias untuk menangani tantangan teknis yang rumit, mengoptimalkan backend, dan berkolaborasi dalam proyek-proyek keren! ( •̀ᴗ•́ )و ̑̑',
     location: 'Indonesia',
     email: 'muhfarhanr10@gmail.com',
-    phone: '+62 123 4567 8900',
+    phone: '+62 878-2372-5457',
     availability: 'Terbuka untuk peluang',
     image: '/img/profil2.jpg',
   },
