@@ -65,7 +65,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
       {#each projects as project}
         <div
-          class="project-card rounded-2xl overflow-hidden"
+          class="project-card rounded-2xl overflow-hidden flex flex-col"
           style="background: var(--bg-card); border: 1px solid var(--border-subtle);"
         >
           <div class="relative overflow-hidden">
@@ -77,45 +77,57 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
           </div>
 
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">{project.title}</h3>
-            <p class="mb-5 leading-relaxed" style="color: var(--text-muted);">{project.description}</p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">{project.title}</h3>
+              <p class="mb-5 leading-relaxed" style="color: var(--text-muted);">{project.description}</p>
 
-            <div class="flex flex-wrap gap-2 mb-6">
-              {#each project.technologies as tech}
-                <span
-                  class="px-3 py-1 text-xs rounded-full font-medium"
-                  style="background: rgba(144,39,241,0.15); color: var(--theme-pink-l);"
-                >
-                  {tech}
-                </span>
-              {/each}
+              <div class="flex flex-wrap gap-2 mb-6">
+                {#each project.technologies as tech}
+                  <span
+                    class="px-3 py-1 text-xs rounded-full font-medium"
+                    style="background: rgba(144,39,241,0.15); color: var(--theme-pink-l);"
+                  >
+                    {tech}
+                  </span>
+                {/each}
+              </div>
             </div>
 
-            <div class="flex space-x-4">
-              <a
-                href={project.live}
-                class="flex-1 text-center py-3 px-4 rounded-lg text-white font-medium flex items-center justify-center transition-opacity duration-300 hover:opacity-90"
-                style="background: var(--theme-grad);"
-              >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
-                {projectsText.viewProject}
-              </a>
-              <a
-                href={project.github}
-                class="flex-1 text-center py-3 px-4 rounded-lg font-medium flex items-center justify-center transition-colors duration-300 border"
-                style="background: var(--bg-card-hover); color: var(--text-secondary); border-color: var(--border-subtle);"
-              >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                </svg>
-                {projectsText.viewCode}
-              </a>
-            </div>
+            {#if (project.live && project.live !== '#') || (project.github && project.github !== '#')}
+              <div class="flex space-x-4 mt-auto pt-2">
+                {#if project.live && project.live !== '#'}
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 text-center py-3 px-4 rounded-lg text-white font-medium flex items-center justify-center transition-opacity duration-300 hover:opacity-90"
+                    style="background: var(--theme-grad);"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    {projectsText.viewProject}
+                  </a>
+                {/if}
+                {#if project.github && project.github !== '#'}
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 text-center py-3 px-4 rounded-lg font-medium flex items-center justify-center transition-colors duration-300 border"
+                    style="background: var(--bg-card-hover); color: var(--text-secondary); border-color: var(--border-subtle);"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                    </svg>
+                    {projectsText.viewCode}
+                  </a>
+                {/if}
+              </div>
+            {/if}
           </div>
         </div>
       {/each}
