@@ -2,11 +2,12 @@
 import { gsap } from './gsapSetup';
 
 // Fungsi untuk animasi scroll ke section
-export const scrollToSection = (sectionId: string) => {
+export const scrollToSection = (sectionId: string, onComplete?: () => void) => {
     gsap.to(window, {
         duration: 1,
         scrollTo: { y: `#${sectionId}`, offsetY: 80 },
-        ease: "power2.inOut"
+        ease: "power2.inOut",
+        onComplete: onComplete,
     });
 };
 

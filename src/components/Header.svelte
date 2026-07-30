@@ -10,23 +10,50 @@
 
   let header: HTMLElement;
   let mobileMenuOpen = false;
-  let isSticky = false;
+  let activeSection = 'beranda';
+  let isNavClicking = false;
+  let clickTimeout: any;
 
   $: activeData = getPortfolioData($currentLang);
   $: personalInfo = activeData.personalInfo;
 
+  function handleNavClick(key: string) {
+    activeSection = key;
+    isNavClicking = true;
+    clearTimeout(clickTimeout);
+
+    scrollToSection(key, () => {
+      isNavClicking = false;
+    });
+
+    clickTimeout = setTimeout(() => {
+      isNavClicking = false;
+    }, 1100);
+  }
+
   onMount(() => {
-    const handleScroll = () => {
-      const hero = document.getElementById('beranda');
-      if (hero) {
-        const heroRect = hero.getBoundingClientRect();
-        // Stick to top as soon as Hero section bottom reaches near top of window
-        isSticky = heroRect.bottom <= 60;
-      }
+    const sectionKeys = ['beranda', 'tentang', 'pengalaman', 'keterampilan', 'proyek', 'kontak'];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -40% 0px',
+      threshold: 0,
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    const observer = new IntersectionObserver((entries) => {
+      if (isNavClicking) return;
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeSection = entry.target.id;
+        }
+      });
+    }, observerOptions);
+
+    sectionKeys.forEach((key) => {
+      const el = document.getElementById(key);
+      if (el) observer.observe(el);
+    });
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -50,7 +77,8 @@
     }, header);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(clickTimeout);
+      observer.disconnect();
       ctx.revert();
     };
   });
@@ -60,17 +88,16 @@
   }
 </script>
 
-<div class="relative w-full z-50 min-h-[68px]">
-  <nav
-    bind:this={header}
-    class="{isSticky ? 'fixed top-0 left-0 right-0 shadow-2xl border-b' : 'relative border-y'} w-full z-50 py-4 px-6 transition-all duration-300"
-    style="
-      background: var(--bg-nav);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-color: var(--border-subtle);
-    "
-  >
+<nav
+  bind:this={header}
+  class="sticky top-0 left-0 right-0 w-full max-w-[100vw] z-50 py-4 px-6 shadow-xl border-y transition-colors duration-300"
+  style="
+    background: var(--bg-nav);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-color: var(--border-subtle);
+  "
+>
   <div class="max-w-7xl mx-auto flex justify-between items-center">
 
     <!-- Brand -->
@@ -81,20 +108,21 @@
     <!-- Desktop Navigation -->
     <div class="hidden md:flex items-center space-x-1">
       {#each activeData.nav as item}
+        {@const isActive = activeSection === item.key}
         <a
           href="#{item.key}"
-          class="nav-item px-4 py-2 rounded-lg transition-colors duration-300 cursor-pointer relative group text-sm font-medium"
-          style="color: var(--text-secondary);"
-          on:click|preventDefault={() => scrollToSection(item.key)}
-          on:mouseover={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-          on:mouseleave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-          on:focus={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-          on:blur={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+          class="nav-item px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer relative group text-sm font-medium"
+          style={isActive ? 'color: var(--theme-pink); background: var(--bg-card-hover); font-weight: 600;' : 'color: var(--text-secondary);'}
+          on:click|preventDefault={() => { handleNavClick(item.key); }}
+          on:mouseover={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
+          on:mouseleave={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
+          on:focus={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
+          on:blur={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
         >
           {item.label}
           <!-- Underline accent -->
           <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full rounded-full"
+            class="absolute bottom-0 left-0 h-0.5 transition-all duration-300 rounded-full {isActive ? 'w-full' : 'w-0 group-hover:w-full'}"
             style="background: var(--theme-grad);"
           ></span>
         </a>
@@ -143,12 +171,12 @@
     </div>
 
     <!-- Mobile: language toggle + hamburger + theme toggle -->
-    <div class="md:hidden flex items-center gap-2">
-      <!-- Language Selector Mobile -->
-      <div class="flex items-center gap-1 p-0.5 rounded-full border text-xs font-semibold" style="background: var(--bg-card); border-color: var(--border-subtle);">
+    <div class="flex md:hidden items-center space-x-2">
+      <!-- Language Selector (Mobile) -->
+      <div class="flex items-center gap-0.5 p-0.5 rounded-full border text-[10px] font-semibold" style="background: var(--bg-card); border-color: var(--border-subtle);">
         {#each ['id', 'en', 'jp'] as lang}
           <button
-            class="px-2 py-0.5 rounded-full transition-all duration-200 uppercase text-[10px]"
+            class="px-2 py-0.5 rounded-full transition-all duration-200 uppercase"
             style={$currentLang === lang ? 'background: var(--theme-purple); color: #fff;' : 'color: var(--text-muted); background: transparent;'}
             on:click={() => setLanguage(lang as Language)}
           >
@@ -157,10 +185,12 @@
         {/each}
       </div>
 
+      <!-- Theme toggle (Mobile) -->
       <button
         class="theme-toggle"
         on:click={toggleTheme}
         aria-label="Toggle theme"
+        title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
       >
         {#if isDark}
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -181,15 +211,16 @@
         {/if}
       </button>
 
+      <!-- Hamburger button -->
       <button
-        class="p-2 rounded-lg transition-colors duration-300"
-        style="color: var(--text-secondary); background: transparent;"
+        class="p-2 rounded-lg transition-colors focus:outline-none"
+        style="color: var(--text-primary);"
         on:click={toggleMobileMenu}
-        aria-label="Toggle mobile menu"
+        aria-label="Toggle menu"
       >
         {#if !mobileMenuOpen}
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         {:else}
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,20 +238,19 @@
       style="background: var(--bg-card); border-color: var(--border-subtle);"
     >
       {#each activeData.nav as item}
+        {@const isActive = activeSection === item.key}
         <a
           href="#{item.key}"
-          class="block py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer mb-2"
-          style="color: var(--text-secondary);"
-          on:click|preventDefault={() => { scrollToSection(item.key); mobileMenuOpen = false; }}
-          on:mouseover={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)')}
-          on:mouseleave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-          on:focus={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)')}
-          on:blur={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+          class="block py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer mb-1.5 font-medium text-sm flex items-center justify-between"
+          style={isActive ? 'color: var(--theme-pink); background: var(--bg-card-hover); font-weight: 600; border-left: 3px solid var(--theme-pink);' : 'color: var(--text-secondary);'}
+          on:click|preventDefault={() => { handleNavClick(item.key); mobileMenuOpen = false; }}
         >
-          {item.label}
+          <span>{item.label}</span>
+          {#if isActive}
+            <span class="w-2 h-2 rounded-full" style="background: var(--theme-pink);"></span>
+          {/if}
         </a>
       {/each}
     </div>
   {/if}
 </nav>
-</div>
